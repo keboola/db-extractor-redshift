@@ -3,7 +3,7 @@ MAINTAINER Miroslav Cillik <miro@keboola.com>
 
 # Deps
 RUN apt-get update
-RUN apt-get install -y wget curl make git bzip2 time libzip-dev openssl libpq-dev
+RUN apt-get install -y wget curl make git zip unzip bzip2 time libzip-dev openssl libpq-dev
 
 # PHP
 RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql
@@ -20,6 +20,6 @@ ADD . /code
 WORKDIR /code
 RUN echo "memory_limit = -1" >> /usr/local/etc/php/php.ini
 RUN echo "date.timezone = \"Europe/Prague\"" >> /usr/local/etc/php/php.ini
-RUN composer selfupdate && composer install --no-interaction
+RUN composer install --no-interaction
 
 CMD php ./run.php --data=/data
