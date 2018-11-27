@@ -92,8 +92,47 @@ class Redshift extends Extractor
 
     }
 
+    /**
+     * @param int $limit
+     * @return bool
+     * @throws UserException
+     */
+    private function validateFetchSize($limit = self::BATCH_SIZE)
+    {
+        $this->logger->info("Validation batch size for cursor fetching.");
+
+        $cursorName = 'exdbcursor' . intval(microtime(true));
+        $cursorSql = "DECLARE $cursorName CURSOR FOR select getdate()";
+
+        try {
+            $this->db->beginTransaction(); // cursors require a transaction.
+
+            $stmt = $this->db->prepare($cursorSql);
+            $stmt->execute();
+
+            $innerStatement = $this->db->prepare("FETCH $limit FROM $cursorName");
+            $innerStatement->execute();
+
+
+            $this->db->exec("CLOSE $cursorName");
+            $this->db->commit();
+        } catch (\PDOException $e) {
+            try {
+                $this->db->rollBack();
+            } catch (\Throwable $e2) {
+            }
+
+            if (preg_match('/Fetch size \d+ exceeds the limit/ui', $e->getMessage())) {
+                throw new UserException($e->getMessage());
+            } else {
+                throw $e;
+            }
+        }
+    }
+
     protected function executeQuery($query, CsvFile $csv)
     {
+        $this->validateFetchSize();
         $this->logger->info("Fetching data using DB cursor");
 
         $cursorName = 'exdbcursor' . intval(microtime(true));
