@@ -10,7 +10,8 @@
         }
     ],
     "require": {
-        "keboola/db-extractor-common": "^9.4.0"
+        "keboola/db-extractor-common": "^9.4.0",
+        "keboola/db-extractor-logger": "^1.0"
     },
     "require-dev": {
         "ext-pdo_pgsql": "*",
