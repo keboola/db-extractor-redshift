@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b3f0b0b4aa5a7520f16af5898bf61ed4",
+    "content-hash": "8d4078c016f243143bd5c2b6762fcc57",
     "packages": [
         {
             "name": "keboola/csv",
@@ -54,23 +54,23 @@
         },
         {
             "name": "keboola/db-extractor-common",
-            "version": "dev-ondra-severance-repository",
+            "version": "9.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/keboola/db-extractor-common.git",
-                "reference": "4dc0fbce6f81054ea2c74dd00aea0eb33e27fe80"
+                "reference": "5fe26b72846244f2d8043024afa5b6c3cf1a1137"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/keboola/db-extractor-common/zipball/4dc0fbce6f81054ea2c74dd00aea0eb33e27fe80",
-                "reference": "4dc0fbce6f81054ea2c74dd00aea0eb33e27fe80",
+                "url": "https://api.github.com/repos/keboola/db-extractor-common/zipball/5fe26b72846244f2d8043024afa5b6c3cf1a1137",
+                "reference": "5fe26b72846244f2d8043024afa5b6c3cf1a1137",
                 "shasum": ""
             },
             "require": {
                 "ext-pdo": "*",
                 "keboola/csv": "^1.1",
-                "keboola/db-extractor-logger": "dev-ondra-init-repo",
-                "keboola/db-extractor-ssh-tunnel": "dev-ondra-init-repo",
+                "keboola/db-extractor-logger": "^1.0",
+                "keboola/db-extractor-ssh-tunnel": "^1.0",
                 "keboola/php-datatypes": "^4.0",
                 "keboola/php-utils": "^2.3",
                 "keboola/retry": "^0.3.0",
@@ -82,11 +82,12 @@
                 "symfony/yaml": "^3.0"
             },
             "require-dev": {
-                "aws/aws-sdk-php": "^3.67",
-                "keboola/coding-standard": "^2.0",
-                "phpstan/phpstan": "^0.8",
-                "phpunit/phpunit": "^7.0",
-                "symfony/finder": "*"
+                "aws/aws-sdk-php": "^3.107",
+                "keboola/coding-standard": "^8.0",
+                "phpstan/phpstan-shim": "^0.11.12",
+                "phpunit/phpunit": "^7.5",
+                "symfony/debug": "^4.3",
+                "symfony/finder": "^4.3"
             },
             "type": "library",
             "autoload": {
@@ -105,20 +106,20 @@
                 }
             ],
             "description": "Common library from Keboola Database Extractors",
-            "time": "2019-07-01T05:51:38+00:00"
+            "time": "2019-08-06T10:22:34+00:00"
         },
         {
             "name": "keboola/db-extractor-logger",
-            "version": "dev-ondra-init-repo",
+            "version": "1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/keboola/db-extractor-logger.git",
-                "reference": "bf37c7856034b1ce0effe168fe25de080a7cf2b1"
+                "reference": "b5aac726191e7bb5627282a0a46ca7cf20f5b2cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/keboola/db-extractor-logger/zipball/bf37c7856034b1ce0effe168fe25de080a7cf2b1",
-                "reference": "bf37c7856034b1ce0effe168fe25de080a7cf2b1",
+                "url": "https://api.github.com/repos/keboola/db-extractor-logger/zipball/b5aac726191e7bb5627282a0a46ca7cf20f5b2cd",
+                "reference": "b5aac726191e7bb5627282a0a46ca7cf20f5b2cd",
                 "shasum": ""
             },
             "require": {
@@ -126,8 +127,8 @@
                 "monolog/monolog": "^1.17"
             },
             "require-dev": {
-                "keboola/coding-standard": "^2.0",
-                "phpstan/phpstan": "^0.8",
+                "keboola/coding-standard": "^8.0",
+                "phpstan/phpstan-shim": "^0.11.12",
                 "phpunit/phpunit": "^8.2"
             },
             "type": "library",
@@ -141,20 +142,20 @@
                 "MIT"
             ],
             "description": "Print info from db-extractor",
-            "time": "2019-07-01T05:56:56+00:00"
+            "time": "2019-07-30T13:28:08+00:00"
         },
         {
             "name": "keboola/db-extractor-ssh-tunnel",
-            "version": "dev-ondra-init-repo",
+            "version": "1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/keboola/db-extractor-ssh-tunnel.git",
-                "reference": "54d71bb93684a8e61de219dedc0597d4ceee0273"
+                "reference": "890b1b8a98b09440fb1db88f9a9b998053722898"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/keboola/db-extractor-ssh-tunnel/zipball/54d71bb93684a8e61de219dedc0597d4ceee0273",
-                "reference": "54d71bb93684a8e61de219dedc0597d4ceee0273",
+                "url": "https://api.github.com/repos/keboola/db-extractor-ssh-tunnel/zipball/890b1b8a98b09440fb1db88f9a9b998053722898",
+                "reference": "890b1b8a98b09440fb1db88f9a9b998053722898",
                 "shasum": ""
             },
             "require": {
@@ -179,7 +180,7 @@
                 "MIT"
             ],
             "description": "Create SSH tunnel for DB Extractors",
-            "time": "2019-07-22T11:39:05+00:00"
+            "time": "2019-07-30T13:20:15+00:00"
         },
         {
             "name": "keboola/php-datatypes",
@@ -3211,11 +3212,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "keboola/db-extractor-common": 20,
-        "keboola/db-extractor-logger": 20,
-        "keboola/db-extractor-ssh-tunnel": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
