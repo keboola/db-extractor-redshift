@@ -10,6 +10,8 @@
         }
     ],
     "require": {
+        "php": "^7.2",
+        "ext-PDO": "^7.2",
         "keboola/db-extractor-common": "^9.4.1",
         "keboola/db-extractor-logger": "^1.0"
     },
