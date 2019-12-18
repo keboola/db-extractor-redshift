@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Keboola\DbExtractor\Extractor;
 
+use Keboola\Csv\Exception as CsvException;
 use Keboola\Datatype\Definition\Redshift as RedshiftDatatype;
 use Keboola\DbExtractor\DbRetryProxy;
+use Keboola\DbExtractor\Exception\ApplicationException;
+use Keboola\DbExtractor\Exception\DeadConnectionException;
 use Keboola\DbExtractor\Exception\UserException;
+use PDOStatement;
 
 class Redshift extends Extractor
 {
@@ -300,5 +304,86 @@ class Redshift extends Extractor
                 );
             }
         });
+    }
+
+    public function export(array $table): array
+    {
+        $outputTable = $table['outputTable'];
+
+        $this->logger->info('Exporting to ' . $outputTable);
+
+        $isAdvancedQuery = true;
+        if (array_key_exists('table', $table) && !array_key_exists('query', $table)) {
+            $isAdvancedQuery = false;
+            $query = $this->simpleQuery($table['table'], $table['columns']);
+        } else {
+            $query = $table['query'];
+        }
+        $maxValue = null;
+        if ($this->canFetchMaxIncrementalValueSeparately($isAdvancedQuery)) {
+            $maxValue = $this->getMaxOfIncrementalFetchingColumn($table['table']);
+        }
+
+        $maxTries = isset($table['retries']) ? (int) $table['retries'] : self::DEFAULT_MAX_TRIES;
+
+        $proxy = new DbRetryProxy($this->logger, $maxTries, [DeadConnectionException::class, \ErrorException::class]);
+        try {
+            $result = $proxy->call(function () use ($queryMain, $maxTries, $outputTable, $isAdvancedQuery) {
+                /** @var PDOStatement $stmt */
+                $this->db->beginTransaction();
+                $this->executeQuery('DECLARE cur1 CURSOR FOR ' . $queryMain, $maxTries);
+                $csv = $this->createOutputCsv($outputTable);
+                $query = "FETCH 1000 FROM cur1";
+                $result = ['rows' => 0];
+                do {
+                    $stmt = $this->executeQuery($query, $maxTries);
+                    $resultTmp = $this->writeToCsv($stmt, $csv, $isAdvancedQuery);
+                    $result['rows'] += $resultTmp['rows'];
+                    $result['lastFetchedRow'] = $resultTmp['lastFetchedRow'];
+                } while ($resultTmp['rows'] > 0);
+                $this->isAlive();
+                $this->db->query('CLOSE cur1');
+                $this->db->commit();
+                return $result;
+            });
+        } catch (CsvException $e) {
+            throw new ApplicationException('Failed writing CSV File: ' . $e->getMessage(), $e->getCode(), $e);
+        } catch (\PDOException $e) {
+            throw $this->handleDbError($e, $table, $maxTries);
+        } catch (\ErrorException $e) {
+            throw $this->handleDbError($e, $table, $maxTries);
+        } catch (DeadConnectionException $e) {
+            throw $this->handleDbError($e, $table, $maxTries);
+        } finally {
+            try {
+                $this->db->query('CLOSE cur1');
+            } catch (\Throwable $e) {
+                // silence
+            }
+        }
+        if ($result['rows'] > 0) {
+            $this->createManifest($table);
+        } else {
+            $this->logger->warn(
+                sprintf(
+                    'Query returned empty result. Nothing was imported to [%s]',
+                    $table['outputTable']
+                )
+            );
+        }
+
+        $output = [
+            'outputTable' => $outputTable,
+            'rows' => $result['rows'],
+        ];
+        // output state
+        if (isset($this->incrementalFetching['column'])) {
+            if ($maxValue) {
+                $output['state']['lastFetchedRow'] = $maxValue;
+            } elseif (!empty($result['lastFetchedRow'])) {
+                $output['state']['lastFetchedRow'] = $result['lastFetchedRow'];
+            }
+        }
+        return $output;
     }
 }
