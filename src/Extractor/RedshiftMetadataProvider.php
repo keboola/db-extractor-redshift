@@ -81,41 +81,13 @@ class RedshiftMetadataProvider implements MetadataProvider
         $sqlTemplate = <<<SQL
 SELECT cols.column_name, cols.table_name, cols.table_schema, 
         cols.column_default, cols.is_nullable, cols.data_type, cols.ordinal_position,
-        cols.character_maximum_length, cols.numeric_precision, cols.numeric_scale,
-        def.contype, def.conkey
+        cols.character_maximum_length, cols.numeric_precision, cols.numeric_scale
 FROM information_schema.columns as cols 
-JOIN (
-  SELECT
-    a.attnum,
-    n.nspname,
-    c.relname,
-    a.attname AS colname,
-    t.typname AS type,
-    a.atttypmod,
-    FORMAT_TYPE(a.atttypid, a.atttypmod) AS complete_type,
-    d.adsrc AS default_value,
-    a.attnotnull AS notnull,
-    a.attlen AS length,
-    co.contype,
-    ARRAY_TO_STRING(co.conkey, ',') AS conkey
-  FROM pg_attribute AS a
-    JOIN pg_class AS c ON a.attrelid = c.oid
-    JOIN pg_namespace AS n ON c.relnamespace = n.oid
-    JOIN pg_type AS t ON a.atttypid = t.oid
-    LEFT OUTER JOIN pg_constraint AS co ON (co.conrelid = c.oid
-        AND a.attnum = ANY(co.conkey) AND (co.contype = 'p' OR co.contype = 'u'))
-    LEFT OUTER JOIN pg_attrdef AS d ON d.adrelid = c.oid AND d.adnum = a.attnum
-  WHERE a.attnum > 0 AND c.relname IN (%s)
-) as def 
-ON cols.column_name = def.colname AND cols.table_name = def.relname
 WHERE cols.table_name IN (%s) ORDER BY cols.table_schema, cols.table_name, cols.ordinal_position
 SQL;
 
         $sql = sprintf(
             $sqlTemplate,
-            implode(', ', array_map(function (string $tableName) {
-                return $this->db->quote($tableName);
-            }, $nameTables)),
             implode(', ', array_map(function (string $tableName) {
                 return $this->db->quote($tableName);
             }, $nameTables))
