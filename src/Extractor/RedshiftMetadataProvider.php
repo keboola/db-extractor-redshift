@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Keboola\DbExtractor\Extractor;
 
+use Keboola\Component\JsonHelper;
 use Keboola\DbExtractor\Adapter\Metadata\MetadataProvider;
 use Keboola\DbExtractor\TableResultFormat\Metadata\Builder\ColumnBuilder;
 use Keboola\DbExtractor\TableResultFormat\Metadata\Builder\MetadataBuilder;
@@ -58,6 +59,7 @@ class RedshiftMetadataProvider implements MetadataProvider
 
         if ($loadColumns) {
             foreach ($this->queryColumns($nameTables) as $column) {
+                echo JsonHelper::encode($column);
                 $tableId = $column['table_schema'] . '.' . $column['table_name'];
                 if (!isset($tableBuilders[$tableId])) {
                     continue;
@@ -66,7 +68,7 @@ class RedshiftMetadataProvider implements MetadataProvider
                 $this->processColumnData($columnBuilder, $column);
             }
         }
-
+        exit();
         return $builder->build();
     }
 

@@ -17,7 +17,6 @@ class RedshiftApplication extends Application
     {
         $config['parameters']['data_dir'] = $dataDir;
         $config['parameters']['extractor_class'] = 'Redshift';
-        $config['action'] = 'getTables';
 
         parent::__construct($config, $logger, $state);
     }

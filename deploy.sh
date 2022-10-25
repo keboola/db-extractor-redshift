@@ -10,8 +10,3 @@ docker tag keboola/ex-db-redshift:latest $REPOSITORY:latest
 eval $(docker run --rm -e KBC_DEVELOPERPORTAL_USERNAME=$KBC_DEVELOPERPORTAL_USERNAME -e KBC_DEVELOPERPORTAL_PASSWORD=$KBC_DEVELOPERPORTAL_PASSWORD quay.io/keboola/developer-portal-cli-v2:latest ecr:get-login keboola keboola.ex-db-redshift)
 docker push $REPOSITORY:$GITHUB_TAG
 docker push $REPOSITORY:latest
-
-docker run --rm \
-  -e KBC_DEVELOPERPORTAL_USERNAME=$KBC_DEVELOPERPORTAL_USERNAME \
-  -e KBC_DEVELOPERPORTAL_PASSWORD=$KBC_DEVELOPERPORTAL_PASSWORD \
-  quay.io/keboola/developer-portal-cli-v2:latest update-app-repository keboola keboola.ex-db-redshift $GITHUB_TAG
