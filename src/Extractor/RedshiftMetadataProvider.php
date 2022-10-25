@@ -83,17 +83,9 @@ SELECT cols.column_name, cols.table_name, cols.table_schema,
         cols.column_default, cols.is_nullable, cols.data_type, cols.ordinal_position,
         cols.character_maximum_length, cols.numeric_precision, cols.numeric_scale
 FROM information_schema.columns as cols 
-WHERE cols.table_name IN (%s) ORDER BY cols.table_schema, cols.table_name, cols.ordinal_position
 SQL;
 
-        $sql = sprintf(
-            $sqlTemplate,
-            implode(', ', array_map(function (string $tableName) {
-                return $this->db->quote($tableName);
-            }, $nameTables))
-        );
-
-        return $this->queryAndFetchAll($sql);
+        return $this->queryAndFetchAll($sqlTemplate);
     }
 
     private function queryTables(?array $whiteList): iterable
