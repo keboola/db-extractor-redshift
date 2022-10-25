@@ -58,17 +58,11 @@ class RedshiftMetadataProvider implements MetadataProvider
         }
 
         if ($loadColumns) {
-            foreach ($this->queryColumns($nameTables) as $column) {
-                echo JsonHelper::encode($column);
-                $tableId = $column['table_schema'] . '.' . $column['table_name'];
-                if (!isset($tableBuilders[$tableId])) {
-                    continue;
-                }
-                $columnBuilder = $tableBuilders[$tableId]->addColumn();
-                $this->processColumnData($columnBuilder, $column);
-            }
+            $array = [];
+            array_push ($array, ...$this->queryColumns($nameTables));
+            echo JsonHelper::encode($array);
+            exit();
         }
-        exit();
         return $builder->build();
     }
 
