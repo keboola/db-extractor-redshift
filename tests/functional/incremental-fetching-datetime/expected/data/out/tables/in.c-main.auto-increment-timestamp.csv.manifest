@@ -1,9 +1,6 @@
 {
     "destination": "in.c-main.auto-increment-timestamp",
     "incremental": true,
-    "primary_key": [
-        "weir_d_i_d"
-    ],
     "metadata": [
         {
             "key": "KBC.name",
@@ -26,12 +23,19 @@
             "value": "BASE TABLE"
         }
     ],
+    "columns": [
+        "weir_d_i_d",
+        "weir_d_na_me",
+        "someinteger",
+        "somedecimal",
+        "type",
+        "datetime"
+    ],
+    "primary_key": [
+        "weir_d_i_d"
+    ],
     "column_metadata": {
         "weir_d_i_d": [
-            {
-                "key": "KBC.datatype.type",
-                "value": "integer"
-            },
             {
                 "key": "KBC.datatype.nullable",
                 "value": false
@@ -57,10 +61,6 @@
                 "value": "weir_d_i_d"
             },
             {
-                "key": "KBC.primaryKey",
-                "value": false
-            },
-            {
                 "key": "KBC.uniqueKey",
                 "value": false
             },
@@ -70,10 +70,6 @@
             }
         ],
         "weir_d_na_me": [
-            {
-                "key": "KBC.datatype.type",
-                "value": "character varying"
-            },
             {
                 "key": "KBC.datatype.nullable",
                 "value": false
@@ -99,10 +95,6 @@
                 "value": "weir_d_na_me"
             },
             {
-                "key": "KBC.primaryKey",
-                "value": false
-            },
-            {
                 "key": "KBC.uniqueKey",
                 "value": true
             },
@@ -112,10 +104,6 @@
             }
         ],
         "someinteger": [
-            {
-                "key": "KBC.datatype.type",
-                "value": "integer"
-            },
             {
                 "key": "KBC.datatype.nullable",
                 "value": true
@@ -141,10 +129,6 @@
                 "value": "someinteger"
             },
             {
-                "key": "KBC.primaryKey",
-                "value": false
-            },
-            {
                 "key": "KBC.uniqueKey",
                 "value": false
             },
@@ -154,10 +138,6 @@
             }
         ],
         "somedecimal": [
-            {
-                "key": "KBC.datatype.type",
-                "value": "numeric"
-            },
             {
                 "key": "KBC.datatype.nullable",
                 "value": true
@@ -183,10 +163,6 @@
                 "value": "somedecimal"
             },
             {
-                "key": "KBC.primaryKey",
-                "value": false
-            },
-            {
                 "key": "KBC.uniqueKey",
                 "value": false
             },
@@ -196,10 +172,6 @@
             }
         ],
         "type": [
-            {
-                "key": "KBC.datatype.type",
-                "value": "character varying"
-            },
             {
                 "key": "KBC.datatype.nullable",
                 "value": true
@@ -225,10 +197,6 @@
                 "value": "type"
             },
             {
-                "key": "KBC.primaryKey",
-                "value": false
-            },
-            {
                 "key": "KBC.uniqueKey",
                 "value": false
             },
@@ -238,10 +206,6 @@
             }
         ],
         "datetime": [
-            {
-                "key": "KBC.datatype.type",
-                "value": "timestamp without time zone"
-            },
             {
                 "key": "KBC.datatype.nullable",
                 "value": false
@@ -263,10 +227,6 @@
                 "value": "datetime"
             },
             {
-                "key": "KBC.primaryKey",
-                "value": false
-            },
-            {
                 "key": "KBC.uniqueKey",
                 "value": false
             },
@@ -275,13 +235,5 @@
                 "value": 6
             }
         ]
-    },
-    "columns": [
-        "weir_d_i_d",
-        "weir_d_na_me",
-        "someinteger",
-        "somedecimal",
-        "type",
-        "datetime"
-    ]
+    }
 }
