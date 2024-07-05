@@ -1,0 +1,120 @@
+{
+    "destination": "in.c-main.auto-increment-timestamp",
+    "incremental": false,
+    "table_metadata": {
+        "KBC.name": "auto increment timestamp",
+        "KBC.sanitizedName": "auto_increment_timestamp",
+        "KBC.schema": "public",
+        "KBC.catalog": "replaceEnv",
+        "KBC.type": "BASE TABLE"
+    },
+    "schema": [
+        {
+            "nullable": false,
+            "primary_key": true,
+            "metadata": {
+                "KBC.sourceName": "_weir%d i-d",
+                "KBC.sanitizedName": "weir_d_i_d",
+                "KBC.uniqueKey": false,
+                "KBC.ordinalPosition": 1
+            },
+            "name": "weir_d_i_d",
+            "data_type": {
+                "base": {
+                    "default": "",
+                    "length": "32",
+                    "type": "INTEGER"
+                }
+            }
+        },
+        {
+            "nullable": false,
+            "primary_key": false,
+            "metadata": {
+                "KBC.sourceName": "weir%d na-me",
+                "KBC.sanitizedName": "weir_d_na_me",
+                "KBC.uniqueKey": true,
+                "KBC.ordinalPosition": 2
+            },
+            "name": "weir_d_na_me",
+            "data_type": {
+                "base": {
+                    "default": "pam",
+                    "length": "30",
+                    "type": "STRING"
+                }
+            }
+        },
+        {
+            "nullable": true,
+            "primary_key": false,
+            "metadata": {
+                "KBC.sourceName": "someinteger",
+                "KBC.sanitizedName": "someinteger",
+                "KBC.uniqueKey": false,
+                "KBC.ordinalPosition": 3
+            },
+            "name": "someinteger",
+            "data_type": {
+                "base": {
+                    "default": "1",
+                    "length": "32",
+                    "type": "INTEGER"
+                }
+            }
+        },
+        {
+            "nullable": true,
+            "primary_key": false,
+            "metadata": {
+                "KBC.sourceName": "somedecimal",
+                "KBC.sanitizedName": "somedecimal",
+                "KBC.uniqueKey": false,
+                "KBC.ordinalPosition": 4
+            },
+            "name": "somedecimal",
+            "data_type": {
+                "base": {
+                    "default": "10.2",
+                    "length": "10,8",
+                    "type": "NUMERIC"
+                }
+            }
+        },
+        {
+            "nullable": true,
+            "primary_key": false,
+            "metadata": {
+                "KBC.sourceName": "type",
+                "KBC.sanitizedName": "type",
+                "KBC.uniqueKey": false,
+                "KBC.ordinalPosition": 5
+            },
+            "name": "type",
+            "data_type": {
+                "base": {
+                    "default": "",
+                    "length": "55",
+                    "type": "STRING"
+                }
+            }
+        },
+        {
+            "nullable": false,
+            "primary_key": false,
+            "metadata": {
+                "KBC.sourceName": "datetime",
+                "KBC.sanitizedName": "datetime",
+                "KBC.uniqueKey": false,
+                "KBC.ordinalPosition": 6
+            },
+            "name": "datetime",
+            "data_type": {
+                "base": {
+                    "default": "(now",
+                    "type": "TIMESTAMP"
+                }
+            }
+        }
+    ]
+}
