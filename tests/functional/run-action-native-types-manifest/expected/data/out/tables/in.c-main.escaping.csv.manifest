@@ -1,4 +1,42 @@
 {
     "destination": "in.c-main.escaping",
-    "incremental": false
+    "incremental": false,
+    "schema": [
+        {
+            "nullable": true,
+            "primary_key": false,
+            "metadata": {
+                "KBC.sourceName": "col1",
+                "KBC.sanitizedName": "col1",
+                "KBC.uniqueKey": false
+            },
+            "name": "col1",
+            "data_type": {
+                "base": {
+                    "type": "STRING"
+                },
+                "redshift": {
+                    "type": "varchar"
+                }
+            }
+        },
+        {
+            "nullable": true,
+            "primary_key": false,
+            "metadata": {
+                "KBC.sourceName": "col2",
+                "KBC.sanitizedName": "col2",
+                "KBC.uniqueKey": false
+            },
+            "name": "col2",
+            "data_type": {
+                "base": {
+                    "type": "STRING"
+                },
+                "redshift": {
+                    "type": "varchar"
+                }
+            }
+        }
+    ]
 }

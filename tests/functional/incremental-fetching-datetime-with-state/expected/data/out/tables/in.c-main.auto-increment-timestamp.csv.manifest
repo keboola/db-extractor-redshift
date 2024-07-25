@@ -45,10 +45,6 @@
                 "value": "INTEGER"
             },
             {
-                "key": "KBC.datatype.length",
-                "value": "32"
-            },
-            {
                 "key": "KBC.datatype.default",
                 "value": ""
             },
@@ -77,10 +73,6 @@
             {
                 "key": "KBC.datatype.basetype",
                 "value": "STRING"
-            },
-            {
-                "key": "KBC.datatype.length",
-                "value": "30"
             },
             {
                 "key": "KBC.datatype.default",
@@ -113,10 +105,6 @@
                 "value": "INTEGER"
             },
             {
-                "key": "KBC.datatype.length",
-                "value": "32"
-            },
-            {
                 "key": "KBC.datatype.default",
                 "value": "1"
             },
@@ -147,10 +135,6 @@
                 "value": "NUMERIC"
             },
             {
-                "key": "KBC.datatype.length",
-                "value": "10,8"
-            },
-            {
                 "key": "KBC.datatype.default",
                 "value": "10.2"
             },
@@ -179,10 +163,6 @@
             {
                 "key": "KBC.datatype.basetype",
                 "value": "STRING"
-            },
-            {
-                "key": "KBC.datatype.length",
-                "value": "55"
             },
             {
                 "key": "KBC.datatype.default",

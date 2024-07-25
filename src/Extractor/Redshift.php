@@ -52,7 +52,7 @@ class Redshift extends BaseExtractor
 
     protected function createExportAdapter(): ExportAdapter
     {
-        $resultWriter = new DefaultResultWriter($this->state);
+        $resultWriter = new RedshiftResultWriter($this->state);
         return new PdoExportAdapter(
             $this->logger,
             $this->connection,
