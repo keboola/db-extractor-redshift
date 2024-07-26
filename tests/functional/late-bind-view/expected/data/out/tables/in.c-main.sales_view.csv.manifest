@@ -1,4 +1,62 @@
 {
     "destination": "in.c-main.sales_view",
-    "incremental": false
+    "incremental": false,
+    "columns": [
+        "usercity",
+        "zipcode"
+    ],
+    "column_metadata": {
+        "usercity": [
+            {
+                "key": "KBC.datatype.nullable",
+                "value": true
+            },
+            {
+                "key": "KBC.datatype.basetype",
+                "value": "STRING"
+            },
+            {
+                "key": "KBC.datatype.type",
+                "value": "varchar"
+            },
+            {
+                "key": "KBC.sourceName",
+                "value": "usercity"
+            },
+            {
+                "key": "KBC.sanitizedName",
+                "value": "usercity"
+            },
+            {
+                "key": "KBC.uniqueKey",
+                "value": false
+            }
+        ],
+        "zipcode": [
+            {
+                "key": "KBC.datatype.nullable",
+                "value": true
+            },
+            {
+                "key": "KBC.datatype.basetype",
+                "value": "STRING"
+            },
+            {
+                "key": "KBC.datatype.type",
+                "value": "varchar"
+            },
+            {
+                "key": "KBC.sourceName",
+                "value": "zipcode"
+            },
+            {
+                "key": "KBC.sanitizedName",
+                "value": "zipcode"
+            },
+            {
+                "key": "KBC.uniqueKey",
+                "value": false
+            }
+        ]
+    }
 }

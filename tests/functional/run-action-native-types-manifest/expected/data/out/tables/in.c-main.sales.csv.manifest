@@ -22,7 +22,6 @@
             "data_type": {
                 "base": {
                     "default": "",
-                    "length": "256",
                     "type": "STRING"
                 }
             }
@@ -40,7 +39,6 @@
             "data_type": {
                 "base": {
                     "default": "",
-                    "length": "256",
                     "type": "STRING"
                 }
             }
@@ -58,7 +56,6 @@
             "data_type": {
                 "base": {
                     "default": "",
-                    "length": "256",
                     "type": "STRING"
                 }
             }
@@ -76,7 +73,6 @@
             "data_type": {
                 "base": {
                     "default": "",
-                    "length": "256",
                     "type": "STRING"
                 }
             }
@@ -94,7 +90,6 @@
             "data_type": {
                 "base": {
                     "default": "",
-                    "length": "256",
                     "type": "STRING"
                 }
             }
@@ -112,7 +107,6 @@
             "data_type": {
                 "base": {
                     "default": "",
-                    "length": "64",
                     "type": "STRING"
                 }
             }
@@ -130,7 +124,6 @@
             "data_type": {
                 "base": {
                     "default": "",
-                    "length": "256",
                     "type": "STRING"
                 }
             }
@@ -148,7 +141,6 @@
             "data_type": {
                 "base": {
                     "default": "",
-                    "length": "256",
                     "type": "STRING"
                 }
             }
@@ -166,7 +158,6 @@
             "data_type": {
                 "base": {
                     "default": "",
-                    "length": "256",
                     "type": "STRING"
                 }
             }
@@ -184,7 +175,6 @@
             "data_type": {
                 "base": {
                     "default": "",
-                    "length": "256",
                     "type": "STRING"
                 }
             }
@@ -202,7 +192,6 @@
             "data_type": {
                 "base": {
                     "default": "",
-                    "length": "256",
                     "type": "STRING"
                 }
             }
@@ -220,7 +209,6 @@
             "data_type": {
                 "base": {
                     "default": "",
-                    "length": "256",
                     "type": "STRING"
                 }
             }

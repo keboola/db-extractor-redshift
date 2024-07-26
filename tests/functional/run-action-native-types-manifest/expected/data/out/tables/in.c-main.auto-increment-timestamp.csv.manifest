@@ -22,7 +22,6 @@
             "data_type": {
                 "base": {
                     "default": "",
-                    "length": "32",
                     "type": "INTEGER"
                 }
             }
@@ -40,7 +39,6 @@
             "data_type": {
                 "base": {
                     "default": "pam",
-                    "length": "30",
                     "type": "STRING"
                 }
             }
@@ -58,7 +56,6 @@
             "data_type": {
                 "base": {
                     "default": "1",
-                    "length": "32",
                     "type": "INTEGER"
                 }
             }
@@ -76,7 +73,6 @@
             "data_type": {
                 "base": {
                     "default": "10.2",
-                    "length": "10,8",
                     "type": "NUMERIC"
                 }
             }
@@ -94,7 +90,6 @@
             "data_type": {
                 "base": {
                     "default": "",
-                    "length": "55",
                     "type": "STRING"
                 }
             }
