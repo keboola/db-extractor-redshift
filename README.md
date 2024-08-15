@@ -52,17 +52,17 @@ AWS_S3_BUCKET=test-bucket
 ```
 4. Install composer dependencies locally
 ```sh
-docker-compose run --rm dev composer install
+docker compose run --rm dev composer install
 ```
 5. Run the tests:
 
 ```sh
-docker-compose run --rm app
+docker compose run --rm app
 ```
 
 Run single test example:
 ```sh
-docker-compose run --rm dev ./vendor/bin/phpunit --debug --filter testGetTables
+docker compose run --rm dev ./vendor/bin/phpunit --debug --filter testGetTables
 ```
 
 ## License
