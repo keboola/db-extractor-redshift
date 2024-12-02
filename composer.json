@@ -13,10 +13,10 @@
         "php": "^8.2",
         "ext-PDO": "*",
         "keboola/db-extractor-adapter": "^1.13",
-        "keboola/db-extractor-common": "^17.0",
-        "keboola/php-component": "^10.1",
+        "keboola/db-extractor-common": "^17.1",
         "keboola/db-extractor-config": "^1.15",
-        "keboola/db-extractor-table-format": "^3.8"
+        "keboola/db-extractor-table-format": "^3.8",
+        "keboola/php-component": "^10.1"
     },
     "require-dev": {
         "aws/aws-sdk-php": "^3.286",
