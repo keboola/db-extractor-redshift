@@ -130,7 +130,8 @@ JOIN (
   WHERE a.attnum > 0 AND c.relname IN (%s)
 ) as def 
 ON cols.column_name = def.colname AND cols.table_name = def.relname
-WHERE cols.table_name IN (%s) AND cols.table_schema IN (%s) ORDER BY cols.table_schema, cols.table_name, cols.ordinal_position
+WHERE cols.table_name IN (%s) AND cols.table_schema IN (%s)
+ORDER BY cols.table_schema, cols.table_name, cols.ordinal_position
 SQL;
 
         $sql = sprintf(
