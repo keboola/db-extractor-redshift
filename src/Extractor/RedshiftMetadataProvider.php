@@ -42,7 +42,9 @@ class RedshiftMetadataProvider implements MetadataProvider
         $columnRequiredProperties= ['ordinalPosition', 'nullable'];
 
         $builder = MetadataBuilder::create($tableRequiredProperties, $columnRequiredProperties);
+        $nameSchemas = [];
         $nameTables = [];
+
         foreach ($this->queryTables($whitelist) as $item) {
             $tableId = $item['table_schema'] . '.' . $item['table_name'];
             $tableBuilder = $builder->addTable();
@@ -53,11 +55,13 @@ class RedshiftMetadataProvider implements MetadataProvider
             }
 
             $this->processTableData($tableBuilder, $item);
+
+            $nameSchemas[] = $item['table_schema'];
             $nameTables[] = $item['table_name'];
         }
 
         if ($loadColumns) {
-            foreach ($this->queryColumns($nameTables) as $column) {
+            foreach ($this->queryColumns($nameSchemas, $nameTables) as $column) {
                 $tableId = $column['table_schema'] . '.' . $column['table_name'];
                 if (!isset($tableBuilders[$tableId])) {
                     continue;
@@ -94,10 +98,10 @@ class RedshiftMetadataProvider implements MetadataProvider
         ;
     }
 
-    private function queryColumns(array $nameTables): iterable
+    private function queryColumns(array $nameSchemas, array $nameTables): iterable
     {
         $sqlTemplate = <<<SQL
-SELECT cols.column_name, cols.table_name, cols.table_schema, 
+SELECT DISTINCT cols.column_name, cols.table_name, cols.table_schema, 
         cols.column_default, cols.is_nullable, cols.data_type, cols.ordinal_position,
         cols.character_maximum_length, cols.numeric_precision, cols.numeric_scale,
         def.contype, def.conkey
@@ -126,7 +130,8 @@ JOIN (
   WHERE a.attnum > 0 AND c.relname IN (%s)
 ) as def 
 ON cols.column_name = def.colname AND cols.table_name = def.relname
-WHERE cols.table_name IN (%s) ORDER BY cols.table_schema, cols.table_name, cols.ordinal_position
+WHERE cols.table_name IN (%s) AND cols.table_schema IN (%s)
+ORDER BY cols.table_schema, cols.table_name, cols.ordinal_position
 SQL;
 
         $sql = sprintf(
@@ -137,6 +142,10 @@ SQL;
             implode(', ', array_map(function (string $tableName) {
                 return $this->db->quote($tableName);
             }, $nameTables)),
+            implode(
+                ', ',
+                array_map(fn (string $schemaName): string => $this->db->quote($schemaName), $nameSchemas),
+            ),
         );
 
         return $this->queryAndFetchAll($sql);

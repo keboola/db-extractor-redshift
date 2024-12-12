@@ -14,9 +14,9 @@ trait EscapingTableTrait
     use InsertRowsTrait;
     use AddConstraintTrait;
 
-    public function createEscapingTable(string $name = 'escaping'): void
+    public function createEscapingTable(string $name = 'escaping', string $schema = 'public'): void
     {
-        $this->createTable($name, $this->getEscapingColumns());
+        $this->createTable($name, $this->getEscapingColumns(), $schema);
     }
 
     public function generateEscapingRows(string $tableName = 'escaping'): void

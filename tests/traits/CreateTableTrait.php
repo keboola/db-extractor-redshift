@@ -12,7 +12,7 @@ trait CreateTableTrait
 
     protected Pdo $connection;
 
-    public function createTable(string $tableName, array $columns): void
+    public function createTable(string $tableName, array $columns, ?string $schema = null): void
     {
         // Generate columns statement
         $columnsSql = [];
@@ -23,7 +23,7 @@ trait CreateTableTrait
         // Create table
         $this->connection->prepare(sprintf(
             'CREATE TABLE %s.%s (%s)',
-            $this->quoteIdentifier((string) getenv('REDSHIFT_DB_SCHEMA')),
+            $this->quoteIdentifier($schema ?? (string) getenv('REDSHIFT_DB_SCHEMA')),
             $this->quoteIdentifier($tableName),
             implode(', ', $columnsSql),
         ))->execute();
