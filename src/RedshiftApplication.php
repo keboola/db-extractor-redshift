@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Keboola\DbExtractor;
 
+use Keboola\DbExtractor\Configuration\RedshiftConfigRowDefinition;
 use Keboola\DbExtractor\Configuration\RedshiftTableNodeDecorator;
 use Keboola\DbExtractorConfig\Config;
 use Keboola\DbExtractorConfig\Configuration\ActionConfigRowDefinition;
 use Keboola\DbExtractorConfig\Configuration\ConfigDefinition;
-use Keboola\DbExtractorConfig\Configuration\ConfigRowDefinition;
 
 class RedshiftApplication extends Application
 {
@@ -22,7 +22,7 @@ class RedshiftApplication extends Application
 
         if ($this->isRowConfiguration($config)) {
             if ($action === 'run') {
-                $configDefinition = new ConfigRowDefinition(
+                $configDefinition = new RedshiftConfigRowDefinition(
                     null,
                     null,
                     null,

@@ -38,7 +38,12 @@ class Redshift extends BaseExtractor
      */
     protected function createMetadataProvider(): MetadataProvider
     {
-        return new RedshiftMetadataProvider($this->connection);
+        return new RedshiftMetadataProvider(
+            $this->connection,
+            // Not declared for sync actions and legacy configs, both of which keep
+            // unknown keys, so reading it straight from parameters is safe
+            (bool) ($this->parameters['propagateDescriptions'] ?? true),
+        );
     }
 
     protected function getQueryFactory(): RedshiftQueryFactory

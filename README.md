@@ -29,9 +29,33 @@
           "enabled": true,
           "primaryKey": null
         }
-      ]
+      ],
+      "propagateDescriptions": true
     }
 ```
+
+## Table and column descriptions
+
+By default the extractor reads the Redshift `COMMENT ON TABLE` and
+`COMMENT ON COLUMN` values of the extracted table and writes them to the
+description of the corresponding table and columns in Storage. This happens on
+every run, so a comment changed in Redshift reaches Storage on the next
+extraction.
+
+Set `propagateDescriptions` to `false` to turn this off. No descriptions are
+then written and no comment is read at all.
+
+Known limitations:
+
+- Descriptions are only available when a table is configured via `table`. In
+  advanced query mode (`query`) the column list comes from the query result
+  itself, which carries no comments, so nothing is propagated.
+- A comment consisting of whitespace only is treated as no description.
+- Removing a comment in Redshift does not clear the description already stored
+  in Storage, it only stops being refreshed.
+- Columns of a late binding view get no description. Redshift does not expose
+  them in `pg_attribute`, which is where the comments are attached. The comment
+  of the view itself is propagated.
 
 ## Running Tests
 
