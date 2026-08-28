@@ -11,6 +11,8 @@ use Keboola\DbExtractor\Adapter\Metadata\MetadataProvider;
 use Keboola\DbExtractor\Adapter\PDO\PdoExportAdapter;
 use Keboola\DbExtractor\Adapter\ResultWriter\DefaultResultWriter;
 use Keboola\DbExtractor\Exception\UserException;
+use Keboola\DbExtractor\Manifest\ManifestGenerator;
+use Keboola\DbExtractor\Manifest\RedshiftManifestGenerator;
 use Keboola\DbExtractor\TableResultFormat\Exception\ColumnNotFoundException;
 use Keboola\DbExtractorConfig\Configuration\ValueObject\DatabaseConfig;
 use Keboola\DbExtractorConfig\Configuration\ValueObject\ExportConfig;
@@ -44,6 +46,12 @@ class Redshift extends BaseExtractor
             // unknown keys, so reading it straight from parameters is safe
             (bool) ($this->parameters['propagateDescriptions'] ?? true),
         );
+    }
+
+    protected function createManifestGenerator(): ManifestGenerator
+    {
+        // Storage no longer accepts a "redshift" data type, only the base one
+        return new RedshiftManifestGenerator(parent::createManifestGenerator());
     }
 
     protected function getQueryFactory(): RedshiftQueryFactory

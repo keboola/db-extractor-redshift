@@ -14,9 +14,6 @@
             "data_type": {
                 "base": {
                     "type": "STRING"
-                },
-                "redshift": {
-                    "type": "varchar"
                 }
             }
         },
@@ -32,9 +29,6 @@
             "data_type": {
                 "base": {
                     "type": "STRING"
-                },
-                "redshift": {
-                    "type": "varchar"
                 }
             }
         }
