@@ -47,6 +47,42 @@ trait SalesTableTrait
         }
     }
 
+    /**
+     * COMMENT ON TABLE / COMMENT ON COLUMN values of the sales fixture.
+     *
+     * Only called by the tests that assert description propagation, so the
+     * expected manifests of the other functional tests stay untouched.
+     */
+    public function addSalesComments(string $tableName = 'sales'): void
+    {
+        $table = sprintf(
+            '%s.%s',
+            $this->quoteIdentifier((string) getenv('REDSHIFT_DB_SCHEMA')),
+            $this->quoteIdentifier($tableName),
+        );
+
+        $statements = [
+            sprintf('COMMENT ON TABLE %s IS \'Sales fact table\'', $table),
+            sprintf(
+                'COMMENT ON COLUMN %s.%s IS \'Gender of the user\'',
+                $table,
+                $this->quoteIdentifier('usergender'),
+            ),
+            sprintf(
+                'COMMENT ON COLUMN %s.%s IS \'Row creation timestamp\'',
+                $table,
+                $this->quoteIdentifier('createdat'),
+            ),
+            // An empty comment must not end up as an empty description. The
+            // remaining columns are deliberately left without any comment.
+            sprintf('COMMENT ON COLUMN %s.%s IS \'\'', $table, $this->quoteIdentifier('usercity')),
+        ];
+
+        foreach ($statements as $statement) {
+            $this->connection->prepare($statement)->execute();
+        }
+    }
+
     private function getSalesRows(): array
     {
         // phpcs:disable Generic.Files.LineLength

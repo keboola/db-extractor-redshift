@@ -1,2 +1,2 @@
-Creating PDO connection to "pgsql:dbname=%s;port=%d;host=%s.redshift.amazonaws.com".
+Creating PDO connection to "pgsql:dbname=%s;port=%d;host=%s".
 Exporting "auto-increment-timestamp" to "in.c-main.auto-increment-timestamp".

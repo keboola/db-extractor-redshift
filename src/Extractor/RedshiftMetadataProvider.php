@@ -17,9 +17,13 @@ class RedshiftMetadataProvider implements MetadataProvider
 {
     private RedshiftPdoConnection $db;
 
-    public function __construct(RedshiftPdoConnection $db)
+    /** If false, table and column COMMENTs are not read and no descriptions are propagated */
+    private bool $propagateDescriptions;
+
+    public function __construct(RedshiftPdoConnection $db, bool $propagateDescriptions = true)
     {
         $this->db = $db;
+        $this->propagateDescriptions = $propagateDescriptions;
     }
 
     public function getTable(InputTable $table): Table
@@ -60,6 +64,14 @@ class RedshiftMetadataProvider implements MetadataProvider
             $nameTables[] = $item['table_name'];
         }
 
+        // COMMENT ON TABLE / COMMENT ON COLUMN of the tables listed above
+        $descriptions = $this->loadDescriptions($nameSchemas, $nameTables, $loadColumns);
+        foreach ($descriptions as $tableId => $tableDescriptions) {
+            if (isset($tableBuilders[$tableId]) && $tableDescriptions['table'] !== null) {
+                $tableBuilders[$tableId]->setDescription($tableDescriptions['table']);
+            }
+        }
+
         if ($loadColumns) {
             foreach ($this->queryColumns($nameSchemas, $nameTables) as $column) {
                 $tableId = $column['table_schema'] . '.' . $column['table_name'];
@@ -68,6 +80,11 @@ class RedshiftMetadataProvider implements MetadataProvider
                 }
                 $columnBuilder = $tableBuilders[$tableId]->addColumn();
                 $this->processColumnData($columnBuilder, $column);
+
+                $columnDescription = $descriptions[$tableId]['columns'][$column['column_name']] ?? null;
+                if ($columnDescription !== null) {
+                    $columnBuilder->setDescription($columnDescription);
+                }
             }
 
             foreach ($this->queryLateBindViewsColumns() as $column) {
@@ -96,6 +113,95 @@ class RedshiftMetadataProvider implements MetadataProvider
             ->setCatalog($data['table_catalog'] ?? null)
             ->setType($data['table_type'] ?? null)
         ;
+    }
+
+    /**
+     * Reads the COMMENT ON TABLE / COMMENT ON COLUMN values of the given tables.
+     *
+     * Returns an empty map when the propagation is turned off, so that no
+     * description reaches the built metadata and no extra query is sent.
+     *
+     * @param string[] $nameSchemas
+     * @param string[] $nameTables
+     * @return array<string, array{table: string|null, columns: array<string, string>}>
+     */
+    private function loadDescriptions(array $nameSchemas, array $nameTables, bool $loadColumns): array
+    {
+        if (!$this->propagateDescriptions || !$nameTables) {
+            return [];
+        }
+
+        $descriptions = [];
+        foreach ($this->queryDescriptions($nameSchemas, $nameTables, $loadColumns) as $row) {
+            $tableId = $row['table_schema'] . '.' . $row['table_name'];
+            if (!isset($descriptions[$tableId])) {
+                $descriptions[$tableId] = ['table' => null, 'columns' => []];
+            }
+
+            if ($row['table_comment'] !== null) {
+                $descriptions[$tableId]['table'] = (string) $row['table_comment'];
+            }
+
+            if ($loadColumns && $row['column_name'] !== null && $row['column_comment'] !== null) {
+                $columnName = (string) $row['column_name'];
+                $descriptions[$tableId]['columns'][$columnName] = (string) $row['column_comment'];
+            }
+        }
+
+        return $descriptions;
+    }
+
+    /**
+     * Comments are read by a query of their own instead of being joined into the
+     * table and column queries, so that those keep returning exactly what they
+     * returned before and cannot start duplicating rows.
+     *
+     * @param string[] $nameSchemas
+     * @param string[] $nameTables
+     */
+    private function queryDescriptions(array $nameSchemas, array $nameTables, bool $loadColumns): iterable
+    {
+        $select = [
+            'ns.nspname AS table_schema',
+            'cls.relname AS table_name',
+            // The two argument form cannot mistake a comment of another object for a table one
+            'OBJ_DESCRIPTION(cls.oid, \'pg_class\') AS table_comment',
+        ];
+
+        $sql = [];
+        $sql[] = 'FROM pg_catalog.pg_class AS cls';
+        $sql[] = 'INNER JOIN pg_catalog.pg_namespace AS ns ON ns.oid = cls.relnamespace';
+
+        if ($loadColumns) {
+            $select[] = 'att.attname AS column_name';
+            $select[] = 'COL_DESCRIPTION(cls.oid, att.attnum) AS column_comment';
+
+            // attnum > 0 leaves out the system columns, LEFT JOIN keeps tables
+            // with no column of their own, eg. a late binding view
+            $sql[] = 'LEFT OUTER JOIN pg_catalog.pg_attribute AS att';
+            $sql[] = 'ON att.attrelid = cls.oid AND att.attnum > 0';
+        }
+
+        $sql[] = sprintf(
+            'WHERE ns.nspname IN (%s) AND cls.relname IN (%s)',
+            $this->quoteList($nameSchemas),
+            $this->quoteList($nameTables),
+        );
+
+        array_unshift($sql, sprintf('SELECT %s', implode(', ', $select)));
+
+        return $this->queryAndFetchAll(implode(' ', $sql));
+    }
+
+    /**
+     * @param string[] $values
+     */
+    private function quoteList(array $values): string
+    {
+        return implode(
+            ', ',
+            array_map(fn (string $value): string => $this->db->quote($value), array_unique($values)),
+        );
     }
 
     private function queryColumns(array $nameSchemas, array $nameTables): iterable

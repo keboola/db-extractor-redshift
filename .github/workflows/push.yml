@@ -21,7 +21,7 @@ env:
   KBC_TEST_PROJECT_CONFIGS: "287551509 287589655 315245768" # space separated list
 
   # Redshift credentials
-  REDSHIFT_DB_HOST: "testing.cx4py8yq28xb.us-east-1.redshift.amazonaws.com"
+  REDSHIFT_DB_HOST: "testing.213856284345.us-east-1.redshift-serverless.amazonaws.com"
   REDSHIFT_DB_PORT: "5439"
   REDSHIFT_DB_USER: "gh_actions_db_ex_tests"
   REDSHIFT_DB_PASSWORD: ${{ secrets.REDSHIFT_DB_PASSWORD }}
@@ -96,7 +96,12 @@ jobs:
         run: docker compose run --rm app composer ci
 
   tests-in-kbc:
-    needs: build
+    # Must NOT run next to "tests". Both work against the same Redshift database,
+    # and the datadir suite calls removeAllTables() before each of its tests,
+    # which drops every table in every non-system schema -- including the ones
+    # these configurations extract. Running them in parallel makes a config hang
+    # on an exclusive lock taken by a concurrent DROP.
+    needs: [build, tests]
     runs-on: ubuntu-latest
     steps:
       -
